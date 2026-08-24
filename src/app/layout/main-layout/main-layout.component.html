@@ -1,0 +1,30 @@
+<a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+<mat-sidenav-container class="app-layout-container" [hasBackdrop]="isMobile">
+  <mat-sidenav 
+    #sidenav 
+    [mode]="isMobile ? 'over' : 'side'" 
+    [opened]="!isMobile"
+    class="app-sidebar-drawer" 
+    aria-label="Application Main Navigation Sidebar">
+    <app-sidenav (navigate)="onNavItemClick()"></app-sidenav>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="app-main-viewport">
+    <app-header 
+      [isMobile]="isMobile" 
+      (toggleSidenav)="onToggleSidenav()">
+    </app-header>
+
+    <main id="main-content" class="app-page-content" tabindex="-1" role="main">
+      <router-outlet></router-outlet>
+    </main>
+
+    <footer class="app-footer" role="contentinfo">
+      <div class="footer-inner">
+        <span>&copy; 2026 ACME Enterprise HR Systems &bull; Salary Management</span>
+        <span class="footer-tag">Internal HR Portal</span>
+      </div>
+    </footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

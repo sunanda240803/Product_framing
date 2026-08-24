@@ -1,0 +1,17 @@
+<div class="error-wrapper" role="alert">
+  <div class="icon-circle" aria-hidden="true">
+    <mat-icon>error_outline</mat-icon>
+  </div>
+  <h3 class="title">{{ title }}</h3>
+  <p class="message">{{ message }}</p>
+  <button 
+    *ngIf="retryable" 
+    mat-flat-button 
+    color="warn" 
+    type="button" 
+    class="retry-btn"
+    (click)="onRetry()">
+    <mat-icon aria-hidden="true">refresh</mat-icon>
+    <span>Try Again</span>
+  </button>
+</div>

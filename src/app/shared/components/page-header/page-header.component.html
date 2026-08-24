@@ -1,0 +1,9 @@
+<header class="page-header" aria-labelledby="page-title">
+  <div class="header-titles">
+    <h1 id="page-title" class="page-title">{{ title }}</h1>
+    <p *ngIf="subtitle" class="page-subtitle">{{ subtitle }}</p>
+  </div>
+  <div class="header-actions">
+    <ng-content select="[actions]"></ng-content>
+  </div>
+</header>

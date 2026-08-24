@@ -1,0 +1,35 @@
+<mat-toolbar class="app-header" role="banner">
+  <div class="header-left">
+    <button 
+      *ngIf="isMobile"
+      mat-icon-button 
+      type="button"
+      class="mobile-toggle-btn" 
+      (click)="onToggleSidenav()"
+      aria-label="Toggle navigation sidebar"
+      matTooltip="Open navigation menu">
+      <mat-icon aria-hidden="true">menu</mat-icon>
+    </button>
+
+    <div class="current-section">
+      <span class="app-brand-label">ACME Salary Management</span>
+      <span class="section-separator" aria-hidden="true">/</span>
+      <h1 class="section-title">{{ pageTitle() }}</h1>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="system-scope-badge" title="Enterprise Scope">
+      <mat-icon aria-hidden="true" class="scope-icon">lan</mat-icon>
+      <span class="scope-text">10k Employees Scope</span>
+    </div>
+
+    <div class="user-indicator" aria-label="Current User: HR Manager">
+      <div class="user-avatar" aria-hidden="true">HR</div>
+      <div class="user-meta">
+        <span class="user-name">HR Manager</span>
+        <span class="user-role">HR Administrator</span>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>

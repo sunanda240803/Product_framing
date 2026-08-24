@@ -1,0 +1,53 @@
+.error-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background: #fff5f5;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+  margin: 1rem 0;
+
+  .icon-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #fee2e2;
+    color: #dc2626;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+
+    mat-icon {
+      font-size: 30px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #991b1b;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .message {
+    font-size: 0.875rem;
+    color: #7f1d1d;
+    max-width: 420px;
+    margin: 0 0 1.25rem 0;
+    line-height: 1.5;
+  }
+
+  .retry-btn {
+    border-radius: 6px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+}

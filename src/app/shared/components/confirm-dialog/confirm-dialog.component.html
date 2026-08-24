@@ -1,0 +1,17 @@
+<h2 mat-dialog-title class="dialog-title">
+  <mat-icon aria-hidden="true" class="title-icon">warning_amber</mat-icon>
+  <span>{{ data.title }}</span>
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <p class="dialog-message">{{ data.message }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button type="button" (click)="onCancel()" aria-label="Cancel operation">
+    {{ data.cancelText || 'Cancel' }}
+  </button>
+  <button mat-flat-button color="primary" type="button" (click)="onConfirm()" aria-label="Confirm operation">
+    {{ data.confirmText || 'Confirm Update' }}
+  </button>
+</mat-dialog-actions>

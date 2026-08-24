@@ -1,0 +1,145 @@
+.app-header {
+  height: 64px;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  padding: 0 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 100;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .mobile-toggle-btn {
+      color: #475569;
+
+      &:hover {
+        color: #0f172a;
+        background: #f1f5f9;
+      }
+    }
+
+    .current-section {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+
+      .app-brand-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #64748b;
+        letter-spacing: -0.01em;
+      }
+
+      .section-separator {
+        color: #cbd5e1;
+        font-weight: 400;
+        font-size: 0.9rem;
+      }
+
+      .section-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+    }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    .system-scope-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      font-size: 0.775rem;
+      font-weight: 600;
+
+      .scope-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        color: #2563eb;
+      }
+    }
+
+    .user-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding-left: 1rem;
+      border-left: 1px solid #e2e8f0;
+
+      .user-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #1e293b;
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        letter-spacing: 0.05em;
+      }
+
+      .user-meta {
+        display: flex;
+        flex-direction: column;
+
+        .user-name {
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: #0f172a;
+          line-height: 1.1;
+        }
+
+        .user-role {
+          font-size: 0.7rem;
+          color: #64748b;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 1rem;
+
+    .header-left {
+      .current-section {
+        .app-brand-label {
+          display: none;
+        }
+
+        .section-separator {
+          display: none;
+        }
+      }
+    }
+
+    .header-right {
+      .system-scope-badge {
+        display: none;
+      }
+    }
+  }
+}

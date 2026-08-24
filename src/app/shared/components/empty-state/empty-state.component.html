@@ -1,0 +1,17 @@
+<div class="empty-state-wrapper" role="status" aria-live="polite">
+  <div class="icon-circle" aria-hidden="true">
+    <mat-icon>{{ icon }}</mat-icon>
+  </div>
+  <h3 class="title">{{ title }}</h3>
+  <p class="message">{{ message }}</p>
+  <button 
+    *ngIf="showResetButton" 
+    mat-stroked-button 
+    color="primary"
+    type="button" 
+    class="reset-btn"
+    (click)="onReset()">
+    <mat-icon aria-hidden="true">filter_alt_off</mat-icon>
+    <span>{{ resetButtonText }}</span>
+  </button>
+</div>

@@ -1,0 +1,17 @@
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  gap: 1rem;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+
+  .message {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #64748b;
+  }
+}

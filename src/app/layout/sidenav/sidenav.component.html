@@ -1,0 +1,47 @@
+<aside class="sidebar-shell" aria-label="Main Sidebar Navigation">
+  <div class="sidebar-header">
+    <a routerLink="/dashboard" class="sidebar-brand" aria-label="ACME Salary Management Dashboard">
+      <div class="brand-badge" aria-hidden="true">
+        <mat-icon>payments</mat-icon>
+      </div>
+      <div class="brand-text">
+        <span class="brand-company">ACME</span>
+        <span class="brand-system">Salary Management</span>
+      </div>
+    </a>
+  </div>
+
+  <mat-divider class="sidebar-divider"></mat-divider>
+
+  <nav class="sidebar-nav" aria-label="Enterprise Navigation">
+    <mat-nav-list role="navigation">
+      <a 
+        mat-list-item 
+        routerLink="/dashboard" 
+        routerLinkActive="active-link"
+        (click)="onNavItemClick()"
+        aria-label="Dashboard Section">
+        <mat-icon matListItemIcon aria-hidden="true" class="nav-icon">dashboard</mat-icon>
+        <span matListItemTitle class="nav-label">Dashboard</span>
+      </a>
+
+      <a 
+        mat-list-item 
+        routerLink="/employees" 
+        routerLinkActive="active-link"
+        (click)="onNavItemClick()"
+        aria-label="Employees Directory Section">
+        <mat-icon matListItemIcon aria-hidden="true" class="nav-icon">people</mat-icon>
+        <span matListItemTitle class="nav-label">Employees</span>
+      </a>
+    </mat-nav-list>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="footer-status">
+      <span class="status-dot"></span>
+      <span class="status-label">HR Portal Active</span>
+    </div>
+    <div class="footer-org">10,000 Global Employees</div>
+  </div>
+</aside>
