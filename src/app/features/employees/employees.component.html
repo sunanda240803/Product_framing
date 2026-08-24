@@ -1,0 +1,187 @@
+<div class="employees-page">
+  <app-page-header 
+    title="Employee Salary Directory" 
+    subtitle="Search, filter, and view salary information for organization employees across global offices.">
+    <div actions>
+      <button 
+        *ngIf="filterForm.value.searchQuery || filterForm.value.country || filterForm.value.department"
+        mat-button 
+        color="warn" 
+        (click)="clearFilters()"
+        aria-label="Reset all search and filter criteria">
+        <mat-icon aria-hidden="true">filter_alt_off</mat-icon>
+        <span>Reset Filters</span>
+      </button>
+    </div>
+  </app-page-header>
+
+  <!-- Search & Filter Controls Panel -->
+  <mat-card class="filter-card">
+    <mat-card-content class="filter-card-content">
+      <form [formGroup]="filterForm" class="filter-form" role="search" aria-label="Filter Employees">
+        <!-- Search Input -->
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search Name or Code</mat-label>
+          <input 
+            matInput 
+            formControlName="searchQuery" 
+            placeholder="e.g. Sarah Jenkins or ACM-1001"
+            aria-label="Search by employee name or code">
+          <mat-icon matPrefix aria-hidden="true" class="field-icon">search</mat-icon>
+          <button 
+            *ngIf="filterForm.value.searchQuery" 
+            mat-icon-button 
+            matSuffix 
+            type="button"
+            (click)="filterForm.patchValue({ searchQuery: '' })" 
+            aria-label="Clear search input">
+            <mat-icon aria-hidden="true">close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <!-- Country Select Filter -->
+        <mat-form-field appearance="outline" class="filter-select">
+          <mat-label>All Countries</mat-label>
+          <mat-select formControlName="country" aria-label="Filter by country">
+            <mat-option value="">All Countries</mat-option>
+            <mat-option *ngFor="let country of countries" [value]="country">
+              {{ country }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix aria-hidden="true" class="field-icon">public</mat-icon>
+        </mat-form-field>
+
+        <!-- Department Select Filter -->
+        <mat-form-field appearance="outline" class="filter-select">
+          <mat-label>All Departments</mat-label>
+          <mat-select formControlName="department" aria-label="Filter by department">
+            <mat-option value="">All Departments</mat-option>
+            <mat-option *ngFor="let dept of departments" [value]="dept">
+              {{ dept }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix aria-hidden="true" class="field-icon">business</mat-icon>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Data Display Container -->
+  <div class="table-container">
+    <!-- Loading State -->
+    <app-loading-state *ngIf="isLoading" message="Fetching employee records..."></app-loading-state>
+
+    <!-- Error State -->
+    <app-error-state 
+      *ngIf="!isLoading && hasError" 
+      title="Unable to Load Employees" 
+      message="Failed to retrieve records from the employee service. Please try again."
+      (retry)="loadEmployees()">
+    </app-error-state>
+
+    <!-- Empty State -->
+    <app-empty-state 
+      *ngIf="!isLoading && !hasError && totalElements === 0"
+      title="No Matching Employees Found"
+      message="No employee records matched your search query or selected country/department filters."
+      icon="search_off"
+      [showResetButton]="true"
+      resetButtonText="Clear All Filters"
+      (reset)="clearFilters()">
+    </app-empty-state>
+
+    <!-- Employee Table -->
+    <mat-card *ngIf="!isLoading && !hasError && totalElements > 0" class="table-card">
+      <div class="responsive-table-wrapper">
+        <table mat-table [dataSource]="employees" class="employee-table" aria-label="Employee Salary Directory Table">
+          
+          <!-- Employee Code Column -->
+          <ng-container matColumnDef="employeeCode">
+            <th mat-header-cell *matHeaderCellDef scope="col">Code</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="code-badge">{{ element.employeeCode }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Employee Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef scope="col">Employee Name</th>
+            <td mat-cell *matCellDef="let element">
+              <a 
+                [routerLink]="['/employees', element.id]" 
+                class="employee-name-link"
+                [attr.aria-label]="'View details for ' + element.firstName + ' ' + element.lastName">
+                {{ element.firstName }} {{ element.lastName }}
+              </a>
+              <span class="email-subtext">{{ element.email }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Country Column -->
+          <ng-container matColumnDef="country">
+            <th mat-header-cell *matHeaderCellDef scope="col">Country</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.country }}
+            </td>
+          </ng-container>
+
+          <!-- Department Column -->
+          <ng-container matColumnDef="department">
+            <th mat-header-cell *matHeaderCellDef scope="col">Department</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="department-pill">{{ element.department }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Job Title Column -->
+          <ng-container matColumnDef="jobTitle">
+            <th mat-header-cell *matHeaderCellDef scope="col">Job Title</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.jobTitle }}
+            </td>
+          </ng-container>
+
+          <!-- Salary Column (Formatted with Employee's Currency!) -->
+          <ng-container matColumnDef="salary">
+            <th mat-header-cell *matHeaderCellDef scope="col" class="salary-header">Annual Salary</th>
+            <td mat-cell *matCellDef="let element" class="salary-cell">
+              <span class="salary-amount">
+                {{ element.salary | currency:element.currency:'symbol':'1.0-0' }}
+              </span>
+              <span class="currency-tag">{{ element.currency }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef scope="col" class="actions-header">Actions</th>
+            <td mat-cell *matCellDef="let element" class="actions-cell">
+              <button 
+                mat-icon-button 
+                color="primary"
+                (click)="viewEmployeeDetails(element)"
+                [attr.aria-label]="'View ' + element.firstName + ' ' + element.lastName + ' details'"
+                matTooltip="View Employee Details">
+                <mat-icon aria-hidden="true">visibility</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <mat-paginator 
+        [length]="totalElements"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="onPageChange($event)"
+        aria-label="Select page of employees"
+        showFirstLastButtons>
+      </mat-paginator>
+    </mat-card>
+  </div>
+</div>
