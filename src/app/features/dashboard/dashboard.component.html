@@ -1,0 +1,296 @@
+<div class="dashboard-page">
+  <app-page-header 
+    title="HR Compensation Analytics" 
+    subtitle="Organization-wide payroll metrics, salary distributions, and regional insights.">
+    <div actions class="header-actions">
+      <mat-form-field appearance="outline" class="currency-filter-select">
+        <mat-label>Currency Context</mat-label>
+        <mat-select [ngModel]="selectedCurrency" (ngModelChange)="onCurrencyChange($event)" aria-label="Select currency context">
+          <mat-option value="USD">USD - United States</mat-option>
+          <mat-option value="GBP">GBP - United Kingdom</mat-option>
+          <mat-option value="EUR">EUR - Europe (DE, FR, ES)</mat-option>
+          <mat-option value="JPY">JPY - Japan</mat-option>
+          <mat-option value="INR">INR - India</mat-option>
+          <mat-option value="CAD">CAD - Canada</mat-option>
+        </mat-select>
+        <mat-icon matPrefix aria-hidden="true">payments</mat-icon>
+      </mat-form-field>
+    </div>
+  </app-page-header>
+
+  <app-loading-state *ngIf="isLoading" message="Calculating organization compensation metrics..."></app-loading-state>
+
+  <app-error-state 
+    *ngIf="!isLoading && hasError" 
+    title="Failed to Load Analytics" 
+    message="Could not compute compensation analytics. Please try again."
+    (retry)="loadAnalytics()">
+  </app-error-state>
+
+  <div *ngIf="!isLoading && !hasError" class="dashboard-content">
+    <!-- Multi-Currency Information Banner -->
+    <div class="multi-currency-banner">
+      <mat-icon class="banner-icon" aria-hidden="true">info</mat-icon>
+      <div class="banner-text">
+        <strong>Multi-Currency Handling:</strong> ACME operates globally across 6 distinct currencies (<code>USD</code>, <code>GBP</code>, <code>EUR</code>, <code>JPY</code>, <code>INR</code>, <code>CAD</code>). To ensure mathematical accuracy, salary metrics are calculated independently per currency rather than forced into an artificial single currency total.
+      </div>
+    </div>
+
+    <!-- Top KPI Cards Grid -->
+    <div class="kpi-grid">
+      <!-- KPI 1: Total Employees -->
+      <mat-card class="kpi-card">
+        <mat-card-content class="kpi-content">
+          <div class="kpi-icon-circle blue">
+            <mat-icon aria-hidden="true">groups</mat-icon>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-label">Total Employees</span>
+            <span class="kpi-value">{{ totalEmployees }}</span>
+            <span class="kpi-subtext">Active global headcount sample</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- KPI Cards per Currency -->
+      <ng-container *ngFor="let summary of currencySummaries">
+        <mat-card class="kpi-card">
+          <mat-card-content class="kpi-content">
+            <div class="kpi-icon-circle green">
+              <mat-icon aria-hidden="true">account_balance_wallet</mat-icon>
+            </div>
+            <div class="kpi-details">
+              <span class="kpi-label">Total Annual Payroll ({{ summary.currency }})</span>
+              <span class="kpi-value">{{ summary.totalAnnualSalary | currency:summary.currency:'symbol':'1.0-0' }}</span>
+              <span class="kpi-subtext">{{ summary.employeeCount }} employee(s) in {{ summary.currency }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="kpi-card">
+          <mat-card-content class="kpi-content">
+            <div class="kpi-icon-circle purple">
+              <mat-icon aria-hidden="true">functions</mat-icon>
+            </div>
+            <div class="kpi-details">
+              <span class="kpi-label">Average Salary ({{ summary.currency }})</span>
+              <span class="kpi-value">{{ summary.averageSalary | currency:summary.currency:'symbol':'1.0-0' }}</span>
+              <span class="kpi-subtext">Arithmetic mean</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="kpi-card">
+          <mat-card-content class="kpi-content">
+            <div class="kpi-icon-circle amber">
+              <mat-icon aria-hidden="true">align_horizontal_center</mat-icon>
+            </div>
+            <div class="kpi-details">
+              <span class="kpi-label">Median Salary ({{ summary.currency }})</span>
+              <span class="kpi-value">{{ summary.medianSalary | currency:summary.currency:'symbol':'1.0-0' }}</span>
+              <span class="kpi-subtext">Midpoint typical salary</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+    </div>
+
+    <!-- HR Management Q&A Explanatory Takeaways -->
+    <mat-card class="qa-card">
+      <mat-card-header>
+        <div mat-card-avatar class="card-avatar primary">
+          <mat-icon>quiz</mat-icon>
+        </div>
+        <mat-card-title>HR Executive Summary &amp; Key Findings</mat-card-title>
+        <mat-card-subtitle>Direct answers to organization-wide compensation questions</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="qa-body">
+        <div class="qa-grid">
+          <div class="qa-item">
+            <div class="qa-question">
+              <mat-icon aria-hidden="true">monetization_on</mat-icon>
+              <span>How much does ACME spend on salaries?</span>
+            </div>
+            <p class="qa-answer">
+              Annual payroll commitment across the 15-employee sample is structured by region: <strong>$410,000 USD</strong> in the US, <strong>£187,000 GBP</strong> in the UK, <strong>€333,000 EUR</strong> across Europe, <strong>¥25.5M JPY</strong> in Japan, <strong>₹9.3M INR</strong> in India, and <strong>$140,000 CAD</strong> in Canada.
+            </p>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-question">
+              <mat-icon aria-hidden="true">bar_chart</mat-icon>
+              <span>What is the typical salary?</span>
+            </div>
+            <p class="qa-answer">
+              The median annual compensation (which removes high-earner skew) stands at <strong>$135,000 USD</strong> in North America, <strong>€88,000 EUR</strong> in Continental Europe, and <strong>₹3,200,000 INR</strong> in India.
+            </p>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-question">
+              <mat-icon aria-hidden="true">public</mat-icon>
+              <span>Which countries have higher / lower compensation?</span>
+            </div>
+            <p class="qa-answer">
+              The United States leads with an average annual compensation of <strong>$136,667 USD</strong>, followed by the United Kingdom (<strong>£93,500 GBP</strong>). Continental European locations (Germany, France, Spain) average <strong>€83,250 EUR</strong>.
+            </p>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-question">
+              <mat-icon aria-hidden="true">business</mat-icon>
+              <span>Which departments have higher / lower average salaries?</span>
+            </div>
+            <p class="qa-answer">
+              <strong>Engineering</strong> and <strong>Product</strong> departments command higher average compensation across all operating regions, driven by specialized technical architectural roles, while <strong>HR</strong> and <strong>Finance</strong> exhibit steady, standardized compensation structures.
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Detailed Analytics Grid -->
+    <div class="insights-grid">
+      <!-- Section 1: Salary by Country -->
+      <mat-card class="insight-card">
+        <mat-card-header>
+          <div mat-card-avatar class="card-avatar blue">
+            <mat-icon aria-hidden="true">flag</mat-icon>
+          </div>
+          <mat-card-title>Salary by Country</mat-card-title>
+          <mat-card-subtitle>Regional headcount and average compensation metrics</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="card-table-wrapper">
+          <table class="analytics-table" aria-label="Salary by Country table">
+            <thead>
+              <tr>
+                <th>Country</th>
+                <th>Currency</th>
+                <th class="text-right">Headcount</th>
+                <th class="text-right">Average Salary</th>
+                <th class="text-right">Salary Range</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let country of countryAnalytics">
+                <td class="font-bold">{{ country.country }}</td>
+                <td><span class="currency-badge">{{ country.currency }}</span></td>
+                <td class="text-right">{{ country.employeeCount }}</td>
+                <td class="text-right font-bold">{{ country.averageSalary | currency:country.currency:'symbol':'1.0-0' }}</td>
+                <td class="text-right subtext">
+                  {{ country.minSalary | currency:country.currency:'symbol':'1.0-0' }} – {{ country.maxSalary | currency:country.currency:'symbol':'1.0-0' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Section 2: Salary by Department -->
+      <mat-card class="insight-card">
+        <mat-card-header>
+          <div mat-card-avatar class="card-avatar purple">
+            <mat-icon aria-hidden="true">corporate_fare</mat-icon>
+          </div>
+          <mat-card-title>Salary by Department</mat-card-title>
+          <mat-card-subtitle>Departmental headcount &amp; currency-aware averages</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="card-body">
+          <div class="department-list">
+            <div *ngFor="let dept of departmentAnalytics" class="dept-row">
+              <div class="dept-header">
+                <span class="dept-name">{{ dept.department }}</span>
+                <span class="dept-count">{{ dept.totalEmployeeCount }} Employee(s)</span>
+              </div>
+              <div class="dept-currencies">
+                <div *ngFor="let cb of dept.currencyBreakdowns" class="curr-pill">
+                  <span class="curr-code">{{ cb.currency }}</span>
+                  <span class="curr-avg">Avg: {{ cb.averageSalary | currency:cb.currency:'symbol':'1.0-0' }}</span>
+                  <span class="curr-count">({{ cb.employeeCount }} emp)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Section 3: Salary Distribution -->
+      <mat-card class="insight-card">
+        <mat-card-header>
+          <div mat-card-avatar class="card-avatar amber">
+            <mat-icon aria-hidden="true">pie_chart</mat-icon>
+          </div>
+          <mat-card-title>Salary Distribution</mat-card-title>
+          <mat-card-subtitle>Compensation band distribution per currency</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="card-body">
+          <div *ngFor="let dist of distributionAnalytics" class="dist-group">
+            <div class="dist-group-header">
+              <span class="currency-tag">{{ dist.currency }} Currency Zone</span>
+              <span class="total-tag">{{ dist.totalCount }} Employees</span>
+            </div>
+
+            <div class="band-list">
+              <div *ngFor="let band of dist.bands" class="band-item">
+                <div class="band-info">
+                  <span class="band-label">{{ band.label }}</span>
+                  <span class="band-metrics">{{ band.count }} emp ({{ band.percentage }}%)</span>
+                </div>
+                <mat-progress-bar mode="determinate" [value]="band.percentage" class="band-progress"></mat-progress-bar>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Section 4: Highest & Lowest Earner Bounds -->
+      <mat-card class="insight-card">
+        <mat-card-header>
+          <div mat-card-avatar class="card-avatar green">
+            <mat-icon aria-hidden="true">swap_vert</mat-icon>
+          </div>
+          <mat-card-title>Compensation Bounds</mat-card-title>
+          <mat-card-subtitle>Highest &amp; lowest salary records per currency zone</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="card-body">
+          <div class="bounds-list">
+            <div *ngFor="let summary of currencySummaries" class="bound-card">
+              <div class="bound-currency-header">
+                <span>{{ summary.currency }} Compensation Tiers</span>
+              </div>
+
+              <div class="bound-row highest" *ngIf="summary.highestSalaryEmployee">
+                <mat-icon class="icon green" aria-hidden="true">arrow_upward</mat-icon>
+                <div class="details">
+                  <span class="badge highest-badge">Highest</span>
+                  <span class="name">{{ summary.highestSalaryEmployee.name }}</span>
+                  <span class="role">{{ summary.highestSalaryEmployee.jobTitle }} &bull; {{ summary.highestSalaryEmployee.department }}</span>
+                </div>
+                <div class="amount">
+                  {{ summary.highestSalaryEmployee.salary | currency:summary.currency:'symbol':'1.0-0' }}
+                </div>
+              </div>
+
+              <div class="bound-row lowest" *ngIf="summary.lowestSalaryEmployee">
+                <mat-icon class="icon gray" aria-hidden="true">arrow_downward</mat-icon>
+                <div class="details">
+                  <span class="badge lowest-badge">Lowest</span>
+                  <span class="name">{{ summary.lowestSalaryEmployee.name }}</span>
+                  <span class="role">{{ summary.lowestSalaryEmployee.jobTitle }} &bull; {{ summary.lowestSalaryEmployee.department }}</span>
+                </div>
+                <div class="amount">
+                  {{ summary.lowestSalaryEmployee.salary | currency:summary.currency:'symbol':'1.0-0' }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
