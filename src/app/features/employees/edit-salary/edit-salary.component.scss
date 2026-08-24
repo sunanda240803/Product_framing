@@ -1,0 +1,130 @@
+.edit-salary-page {
+  .top-nav-bar {
+    margin-bottom: 1.25rem;
+
+    button {
+      border-radius: 6px;
+      font-weight: 600;
+    }
+  }
+
+  .code-chip {
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .form-card {
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    background: #ffffff;
+    padding: 1.25rem;
+
+    .icon-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: #eff6ff;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    mat-card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    mat-card-subtitle {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .card-body {
+      padding-top: 1.25rem;
+
+      .readonly-context-box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1.25rem;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #f1f5f9;
+        margin-bottom: 1.75rem;
+
+        .context-item {
+          flex: 1 1 200px;
+          display: flex;
+          flex-direction: column;
+
+          .label {
+            font-size: 0.725rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.25rem;
+          }
+
+          .value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #0f172a;
+
+            &.code {
+              font-family: monospace;
+              color: #2563eb;
+            }
+
+            &.salary {
+              color: #1e40af;
+              font-weight: 700;
+            }
+          }
+
+          &.highlight {
+            background: #ffffff;
+            padding: 0.5rem 0.85rem;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+          }
+        }
+      }
+
+      .salary-edit-form {
+        .form-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          gap: 1.25rem;
+          margin-bottom: 1.5rem;
+
+          .form-field {
+            width: 100%;
+
+            .field-icon {
+              color: #64748b;
+              margin-right: 0.4rem;
+            }
+          }
+        }
+
+        .form-actions {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 0.85rem;
+          padding-top: 1rem;
+          border-top: 1px solid #f1f5f9;
+
+          button {
+            border-radius: 6px;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+}

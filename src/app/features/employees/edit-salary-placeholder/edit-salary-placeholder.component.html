@@ -1,0 +1,69 @@
+<div class="edit-salary-placeholder-page">
+  <div class="top-nav-bar">
+    <button mat-stroked-button (click)="goBackToDetails()" aria-label="Back to employee details page">
+      <mat-icon aria-hidden="true">arrow_back</mat-icon>
+      <span>Back to Employee Details</span>
+    </button>
+  </div>
+
+  <app-loading-state *ngIf="isLoading" message="Loading employee record..."></app-loading-state>
+
+  <app-empty-state 
+    *ngIf="!isLoading && !employee" 
+    title="Employee Record Not Found" 
+    message="Cannot edit salary: No employee matching the provided ID was found."
+    icon="person_off"
+    [showResetButton]="true"
+    resetButtonText="Return to Employee Directory"
+    (reset)="goBackToDetails()">
+  </app-empty-state>
+
+  <div *ngIf="!isLoading && employee" class="placeholder-container">
+    <app-page-header 
+      [title]="'Edit Salary &bull; ' + employee.firstName + ' ' + employee.lastName" 
+      [subtitle]="'Employee Code: ' + employee.employeeCode + ' &bull; Current Salary: ' + (employee.salary | currency:employee.currency:'symbol':'1.0-0') + ' ' + employee.currency">
+      <div actions>
+        <mat-chip-option selected color="accent" class="status-chip">
+          <mat-icon>construction</mat-icon>
+          <span>Step 5 Placeholder</span>
+        </mat-chip-option>
+      </div>
+    </app-page-header>
+
+    <mat-card class="placeholder-card">
+      <mat-card-header>
+        <div mat-card-avatar class="card-icon-circle">
+          <mat-icon>edit_note</mat-icon>
+        </div>
+        <mat-card-title>Update Salary Workflow Placeholder</mat-card-title>
+        <mat-card-subtitle>Target Route: /employees/{{ employee.id }}/edit-salary</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="card-content">
+        <p class="description">
+          The <code>/employees/:id/edit-salary</code> route is configured and active.
+          The interactive Reactive Forms salary edit form, validation rules, effective date selection, and Spring Boot REST API update calls will be implemented in Step 5.
+        </p>
+
+        <div class="current-salary-preview">
+          <div class="preview-item">
+            <span class="label">Current Salary</span>
+            <span class="value">{{ employee.salary | currency:employee.currency:'symbol':'1.0-0' }} {{ employee.currency }}</span>
+          </div>
+
+          <div class="preview-item">
+            <span class="label">Effective Date</span>
+            <span class="value">{{ employee.salaryEffectiveDate | date:'longDate' }}</span>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button mat-flat-button color="primary" (click)="goBackToDetails()" aria-label="Back to employee details">
+            <mat-icon aria-hidden="true">arrow_back</mat-icon>
+            <span>Back to Employee Details</span>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
