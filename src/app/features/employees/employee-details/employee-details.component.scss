@@ -1,0 +1,146 @@
+.employee-details-page {
+  .top-action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+
+    button {
+      border-radius: 6px;
+      font-weight: 600;
+    }
+  }
+
+  .code-chip {
+    font-size: 0.825rem;
+    font-weight: 700;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+
+    .section-card {
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      background: #ffffff;
+      padding: 1.25rem;
+
+      .icon-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.primary {
+          background: #eff6ff;
+          color: #2563eb;
+        }
+
+        &.accent {
+          background: #ecfdf5;
+          color: #059669;
+        }
+      }
+
+      mat-card-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      mat-card-subtitle {
+        font-size: 0.8rem;
+        color: #64748b;
+      }
+
+      .card-content {
+        padding-top: 1.25rem;
+
+        .info-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 1rem;
+
+          .info-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.85rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #f1f5f9;
+
+            .label {
+              font-size: 0.725rem;
+              color: #64748b;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.04em;
+              margin-bottom: 0.25rem;
+            }
+
+            .value {
+              font-size: 0.9rem;
+              font-weight: 600;
+              color: #0f172a;
+
+              &.code {
+                font-family: monospace;
+                color: #2563eb;
+              }
+            }
+          }
+        }
+
+        .salary-highlight-box {
+          padding: 1.25rem;
+          background: #eff6ff;
+          border-radius: 8px;
+          border: 1px solid #dbeafe;
+          margin-bottom: 1.25rem;
+          display: flex;
+          flex-direction: column;
+
+          .salary-label {
+            font-size: 0.775rem;
+            font-weight: 600;
+            color: #1d4ed8;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.25rem;
+          }
+
+          .salary-amount {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #1e40af;
+            line-height: 1.1;
+          }
+
+          .currency-code {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-top: 0.25rem;
+          }
+        }
+
+        .card-actions {
+          margin-top: 1.5rem;
+          padding-top: 1rem;
+          border-top: 1px solid #f1f5f9;
+
+          button {
+            border-radius: 6px;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+}

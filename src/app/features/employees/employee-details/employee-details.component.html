@@ -1,0 +1,151 @@
+<div class="employee-details-page">
+  <div class="top-action-bar">
+    <button mat-stroked-button (click)="goBackToEmployees()" aria-label="Back to employee directory">
+      <mat-icon aria-hidden="true">arrow_back</mat-icon>
+      <span>Back to Employees</span>
+    </button>
+
+    <button 
+      *ngIf="employee" 
+      mat-flat-button 
+      color="primary" 
+      (click)="navigateToEditSalary()" 
+      aria-label="Edit employee salary">
+      <mat-icon aria-hidden="true">edit</mat-icon>
+      <span>Edit Salary</span>
+    </button>
+  </div>
+
+  <app-loading-state *ngIf="isLoading" message="Fetching employee details..."></app-loading-state>
+
+  <app-error-state 
+    *ngIf="!isLoading && hasError" 
+    title="Failed to Load Employee" 
+    message="Could not load employee details from the service. Please try again."
+    (retry)="loadEmployeeDetails(id)">
+  </app-error-state>
+
+  <app-empty-state 
+    *ngIf="!isLoading && !hasError && !employee" 
+    title="Employee Record Not Found" 
+    message="No employee record exists for the provided ID."
+    icon="person_off"
+    [showResetButton]="true"
+    resetButtonText="Return to Employees Directory"
+    (reset)="goBackToEmployees()">
+  </app-empty-state>
+
+  <div *ngIf="!isLoading && !hasError && employee" class="profile-layout">
+    <app-page-header 
+      [title]="employee.firstName + ' ' + employee.lastName" 
+      [subtitle]="employee.jobTitle + ' &bull; ' + employee.department">
+      <div actions>
+        <mat-chip-option selected color="primary" class="code-chip">
+          <mat-icon>tag</mat-icon>
+          <span>{{ employee.employeeCode }}</span>
+        </mat-chip-option>
+      </div>
+    </app-page-header>
+
+    <div class="cards-grid">
+      <!-- Employee Information Card -->
+      <mat-card class="section-card">
+        <mat-card-header>
+          <div mat-card-avatar class="icon-avatar primary">
+            <mat-icon>badge</mat-icon>
+          </div>
+          <mat-card-title>Employee Information</mat-card-title>
+          <mat-card-subtitle>Personal &amp; Organizational Profile</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="card-content">
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Employee ID</span>
+              <span class="value code">{{ employee.id }}</span>
+            </div>
+
+            <div class="info-item">
+              <span class="label">Employee Code</span>
+              <span class="value code">{{ employee.employeeCode }}</span>
+            </div>
+
+            <div class="info-item">
+              <span class="label">Full Name</span>
+              <span class="value">{{ employee.firstName }} {{ employee.lastName }}</span>
+            </div>
+
+            <div class="info-item">
+              <span class="label">Email Address</span>
+              <span class="value">{{ employee.email }}</span>
+            </div>
+
+            <div class="info-item">
+              <span class="label">Country / Location</span>
+              <span class="value">{{ employee.country }}</span>
+            </div>
+
+            <div class="info-item">
+              <span class="label">Department</span>
+              <span class="value">{{ employee.department }}</span>
+            </div>
+
+            <div class="info-item">
+              <span class="label">Job Title</span>
+              <span class="value">{{ employee.jobTitle }}</span>
+            </div>
+
+            <div class="info-item">
+              <span class="label">Hire Date</span>
+              <span class="value">{{ employee.hireDate | date:'longDate' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Compensation Card -->
+      <mat-card class="section-card salary-card">
+        <mat-card-header>
+          <div mat-card-avatar class="icon-avatar accent">
+            <mat-icon>payments</mat-icon>
+          </div>
+          <mat-card-title>Compensation &amp; Payroll</mat-card-title>
+          <mat-card-subtitle>Current Salary &amp; Effective Date</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="card-content">
+          <div class="salary-highlight-box">
+            <span class="salary-label">Current Annual Salary</span>
+            <span class="salary-amount">
+              {{ employee.salary | currency:employee.currency:'symbol':'1.0-0' }}
+            </span>
+            <span class="currency-code">{{ employee.currency }}</span>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Currency Code</span>
+              <span class="value">{{ employee.currency }}</span>
+            </div>
+
+            <div class="info-item">
+              <span class="label">Salary Effective Date</span>
+              <span class="value">{{ employee.salaryEffectiveDate | date:'longDate' }}</span>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button 
+              mat-flat-button 
+              color="primary" 
+              (click)="navigateToEditSalary()"
+              aria-label="Navigate to edit salary page">
+              <mat-icon aria-hidden="true">edit</mat-icon>
+              <span>Edit Salary</span>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
